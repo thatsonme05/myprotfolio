@@ -1,0 +1,332 @@
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="nav-inner container">
+    <div class="logo">
+      <span class="logo-mark">M</span>
+      <span class="logo-text">MOH MAULIDIN</span>
+    </div>
+    <button class="hamburger" (click)="menuOpen = !menuOpen" [class.open]="menuOpen">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" [class.open]="menuOpen">
+      <li><a href="#hero"       (click)="menuOpen=false">Home</a></li>
+      <li><a href="#projects"   (click)="menuOpen=false">Projects</a></li>
+      <li><a href="#experience" (click)="menuOpen=false">Experience</a></li>
+      <li><a href="#about"      (click)="menuOpen=false">About</a></li>
+      <li><a href="#contact"    (click)="menuOpen=false">Contact</a></li>
+      <li><a routerLink="/admin/login" class="admin-link" (click)="menuOpen=false">Admin</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="hero">
+  <div class="hero-bg-text">DEV</div>
+
+  <div class="hero-inner container">
+    <!-- Left: text content -->
+    <div class="hero-content">
+      <span class="hero-label">
+        <span class="label-line"></span>
+        Web Developer · Palu, Sulawesi Tengah
+      </span>
+
+      <h1 class="hero-title">
+        Moh<br>
+        <em>Maulidin</em><br>
+        Mahdi
+      </h1>
+
+      <p class="hero-sub">
+        Full-stack developer berpengalaman di Shopify, Laravel, WordPress, dan Angular.
+        Fokus pada solusi digital yang bersih, profesional, dan tepat sasaran.
+      </p>
+
+      <div class="hero-pills">
+        <span class="pill">Shopify</span>
+        <span class="pill">Angular</span>
+        <span class="pill">Laravel</span>
+        <span class="pill">WordPress</span>
+      </div>
+
+      <div class="hero-ctas">
+        <a href="#projects" class="btn-primary">Lihat Projects</a>
+        <a href="#contact"  class="btn-ghost">Hubungi Saya</a>
+      </div>
+    </div>
+
+    <!-- Center: Profile Photo -->
+    <div class="hero-photo-wrap">
+      <div class="photo-frame">
+        <div class="photo-border-top"></div>
+        <img [src]="profile.photo" alt="Moh Maulidin Mahdi" class="photo-img" />
+        <div class="photo-tag">
+          <span class="pt-name">Moh Maulidin Mahdi</span>
+          <span class="pt-role">Web Developer</span>
+        </div>
+      </div>
+      <div class="photo-deco-line"></div>
+    </div>
+
+    <!-- Right: Stats -->
+    <div class="hero-stats">
+      <div class="stat-box">
+        <span class="stat-num">4+</span>
+        <span class="stat-lbl">Tahun<br>Pengalaman</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-box">
+        <span class="stat-num">10+</span>
+        <span class="stat-lbl">Project<br>Selesai</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-box">
+        <span class="stat-num">4</span>
+        <span class="stat-lbl">Tech<br>Stack</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>SCROLL</span>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section class="projects-section" id="projects">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-left">
+        <span class="section-tag">002 — MY WORK</span>
+        <h2 class="section-title">Project<br><em>Terpilih</em></h2>
+      </div>
+      <p class="section-desc">Hasil karya selama mengeksplorasi dunia web development — dari e-commerce Shopify hingga sistem informasi Angular.</p>
+    </div>
+
+    <div class="filter-bar">
+      <button *ngFor="let cat of categories"
+              class="filter-btn"
+              [class.active]="selectedCategory === cat"
+              (click)="selectCategory(cat)">
+        {{ cat }}
+      </button>
+    </div>
+
+    <div class="projects-grid">
+      <div class="project-card" *ngFor="let project of filtered">
+        <div class="card-image">
+          <img *ngIf="project.image" [src]="project.image" [alt]="project.title" />
+          <div *ngIf="!project.image" class="placeholder-img">
+            <span class="placeholder-initials">{{ getPlaceholder(project) }}</span>
+            <div class="placeholder-lines"><div></div><div></div><div></div></div>
+          </div>
+          <div class="card-overlay">
+            <span class="card-year">{{ project.year }}</span>
+            <span class="card-category">{{ project.category }}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span *ngFor="let tag of project.tags" class="tag">{{ tag }}</span>
+          </div>
+          <h3 class="card-title">{{ project.title }}</h3>
+          <p class="card-desc">{{ project.description }}</p>
+          <div class="card-footer">
+            <span class="card-client" *ngIf="project.client">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              {{ project.client }}
+            </span>
+            <a *ngIf="project.link" [href]="project.link" target="_blank" class="card-link">View →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <p>Belum ada project di kategori ini.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCE ===== -->
+<section class="experience-section" id="experience">
+  <div class="container">
+    <div class="exp-layout">
+      <div class="exp-left">
+        <span class="section-tag">003 — JOURNEY</span>
+        <h2 class="section-title">Work<br><em>Experience</em></h2>
+
+        <!-- Education block -->
+        <div class="edu-block">
+          <h3 class="sub-section-title">Education</h3>
+          <div class="edu-list">
+            <div class="edu-item" *ngFor="let edu of education">
+              <div class="edu-dot"></div>
+              <div class="edu-info">
+                <span class="edu-school">{{ edu.school }}</span>
+                <span class="edu-degree">{{ edu.degree }}</span>
+                <span class="edu-period">{{ edu.period }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-right">
+        <div class="exp-item" *ngFor="let exp of experience; let i = index">
+          <div class="exp-num">{{ (i + 1).toString().padStart(2,'0') }}</div>
+          <div class="exp-detail">
+            <div class="exp-header">
+              <h3 class="exp-role">{{ exp.role }}</h3>
+              <span class="exp-period">{{ exp.period }}</span>
+            </div>
+            <p class="exp-company">{{ exp.company }}</p>
+            <p class="exp-desc">{{ exp.desc }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ABOUT / SKILLS ===== -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- Left: bio + photo mini -->
+      <div class="about-left">
+        <span class="section-tag">004 — ABOUT ME</span>
+        <h2 class="section-title">Hello,<br>Saya <em>Maulidin</em></h2>
+
+        <div class="about-photo-row">
+          <div class="about-photo-mini">
+            <img [src]="profile.photo" alt="Moh Maulidin Mahdi" />
+          </div>
+          <div class="about-bio-short">
+            <p class="bio-name">Moh Maulidin Mahdi</p>
+            <p class="bio-age">23 Tahun &middot; Web Developer</p>
+            <p class="bio-loc">📍 Palu, Sulawesi Tengah</p>
+          </div>
+        </div>
+
+        <p class="about-text">
+          Saya adalah seorang Web Developer yang berfokus pada Shopify, WordPress, Angular, dan Laravel.
+          Saya mulai karir di dunia web development sejak masa kuliah dan memiliki passion dalam membangun
+          produk digital yang bersih dan efisien.
+        </p>
+        <p class="about-text">
+          Saya juga memiliki pengalaman di DPRD Provinsi Sulawesi Tengah sebagai Backend Developer
+          dan System Analyst — membuktikan kemampuan saya dalam lingkungan enterprise yang demanding.
+        </p>
+
+        <div class="about-contacts">
+          <a href="tel:+6282238134501" class="contact-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-5.99-5.99 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+            +62-822-3813-4501
+          </a>
+          <a href="mailto:maulidinmhdi2002@gmail.com" class="contact-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+            maulidinmhdi2002&#64;gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/maulidin-mahdi25" target="_blank" class="contact-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+            linkedin.com/in/maulidin-mahdi25
+          </a>
+          <a href="https://instagram.com/maulidinmhdi" target="_blank" class="contact-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+            &#64;maulidinmhdi
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: skills -->
+      <div class="about-right">
+        <h3 class="sub-section-title">Tech Stack &amp; Skills</h3>
+        <div class="skills-list">
+          <div class="skill-row" *ngFor="let skill of skills">
+            <div class="skill-info">
+              <span class="skill-name">{{ skill.name }}</span>
+              <span class="skill-pct">{{ skill.level }}%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-fill" [style.width.%]="skill.level"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <span class="section-tag">005 — CONTACT</span>
+      <h2 class="contact-title">Mari<br><em>Berkolaborasi</em></h2>
+      <p class="contact-sub">Punya project atau ingin berdiskusi? Jangan ragu untuk menghubungi saya.</p>
+      <div class="contact-grid">
+        <a href="tel:+6282238134501" class="contact-card">
+          <div class="cc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-5.99-5.99 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+            </svg>
+          </div>
+          <div><span class="cc-label">WhatsApp / Phone</span><span class="cc-value">+62-822-3813-4501</span></div>
+        </a>
+        <a href="mailto:maulidinmhdi2002@gmail.com" class="contact-card">
+          <div class="cc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+            </svg>
+          </div>
+          <div><span class="cc-label">Email</span><span class="cc-value">maulidinmhdi2002&#64;gmail.com</span></div>
+        </a>
+        <a href="https://www.linkedin.com/in/maulidin-mahdi25" target="_blank" class="contact-card">
+          <div class="cc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+          </div>
+          <div><span class="cc-label">LinkedIn</span><span class="cc-value">maulidin-mahdi25</span></div>
+        </a>
+        <a href="https://instagram.com/maulidinmhdi" target="_blank" class="contact-card">
+          <div class="cc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+            </svg>
+          </div>
+          <div><span class="cc-label">Instagram</span><span class="cc-value">&#64;maulidinmhdi</span></div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-mark">M</span>
+          <span class="logo-text">MOH MAULIDIN MAHDI</span>
+        </div>
+        <p>Web Developer — Palu, Sulawesi Tengah</p>
+      </div>
+      <p class="footer-copy">&copy; {{ currentYear }} Moh Maulidin Mahdi. All rights reserved.</p>
+      <a routerLink="/admin/login" class="footer-admin">Admin Panel →</a>
+    </div>
+  </div>
+</footer>

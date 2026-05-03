@@ -1,0 +1,238 @@
+<div class="dashboard">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-top">
+      <div class="logo"><span class="lm">M</span><div><p class="ln">MOH MAULIDIN</p><p class="lr">Admin Panel</p></div></div>
+    </div>
+    <nav class="sb-nav">
+      <button class="ni" [class.active]="tab==='projects'" (click)="tab='projects'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Projects
+      </button>
+      <button class="ni" [class.active]="tab==='stats'" (click)="tab='stats'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Statistik
+      </button>
+    </nav>
+    <div class="sb-foot">
+      <a routerLink="/" class="ni">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        View Site
+      </a>
+      <button class="ni logout" (click)="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <header class="dh">
+      <div>
+        <h1>{{ tab === 'projects' ? 'Projects' : 'Statistik' }}</h1>
+        <p class="dh-sub">{{ total }} total project</p>
+      </div>
+      <button class="btn-add" (click)="openAdd()" *ngIf="tab==='projects'">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="14" height="14"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Tambah Project
+      </button>
+    </header>
+
+    <!-- STATS TAB -->
+    <div class="stats-tab" *ngIf="tab==='stats'">
+      <div class="s-cards">
+        <div class="sc"><span class="sn">{{ total }}</span><span class="sl">Total Project</span></div>
+        <div class="sc"><span class="sn">{{ withImg }}</span><span class="sl">Ada Foto</span></div>
+        <div class="sc"><span class="sn">{{ total - withImg }}</span><span class="sl">Tanpa Foto</span></div>
+        <div class="sc"><span class="sn">{{ cats.length }}</span><span class="sl">Kategori</span></div>
+      </div>
+      <div class="s-cats">
+        <h3 class="s-cats-title">Kategori</h3>
+        <div class="s-cat" *ngFor="let c of cats">
+          <span>{{ c }}</span><span class="s-cat-n">{{ catCount(c) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECTS TAB -->
+    <div class="projects-tab" *ngIf="tab==='projects'">
+
+      <!-- Mobile cards -->
+      <div class="mob-cards">
+        <div class="mob-card" *ngFor="let p of projects">
+          <div class="mc-thumb">
+            <img *ngIf="p.image" [src]="p.image" [alt]="p.title" />
+            <div class="mc-no-img" *ngIf="!p.image">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="22" height="22"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+          </div>
+          <div class="mc-info">
+            <p class="mc-title">{{ p.title }}</p>
+            <p class="mc-meta">{{ p.category }} · {{ p.year }}</p>
+            <p class="mc-status" [class.ok]="p.image">{{ p.image ? '✓ Ada foto' : '— Belum ada foto' }}</p>
+          </div>
+          <div class="mc-actions">
+            <button class="ab edit" (click)="openEdit(p)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="ab del" (click)="askDelete(p.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+          <!-- Delete confirm -->
+          <div class="del-confirm" *ngIf="deleteId === p.id">
+            <span>Hapus "{{ p.title }}"?</span>
+            <button class="dc-yes" (click)="doDelete(p.id)">Hapus</button>
+            <button class="dc-no"  (click)="cancelDelete()">Batal</button>
+          </div>
+        </div>
+        <div class="empty" *ngIf="projects.length===0">Belum ada project. Klik "Tambah Project".</div>
+      </div>
+
+      <!-- Desktop table -->
+      <div class="desk-table">
+        <div class="dt-head">
+          <span>Project</span><span>Kategori</span><span>Tahun</span><span>Foto</span><span>Aksi</span>
+        </div>
+        <div class="dt-row" *ngFor="let p of projects">
+          <div class="dr-proj">
+            <div class="dr-thumb">
+              <img *ngIf="p.image" [src]="p.image" [alt]="p.title" />
+              <div class="dr-noi" *ngIf="!p.image">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="15" height="15"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+            </div>
+            <div class="dr-inf">
+              <span class="dr-t">{{ p.title }}</span>
+              <span class="dr-tags"><span class="mt" *ngFor="let t of p.tags.slice(0,2)">{{ t }}</span></span>
+            </div>
+          </div>
+          <span class="dr-cat">{{ p.category }}</span>
+          <span class="dr-yr">{{ p.year }}</span>
+          <span class="dr-img" [class.ok]="p.image">{{ p.image ? '✓ Ada' : '—' }}</span>
+          <div class="dr-act">
+            <button class="ab edit" (click)="openEdit(p)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+            <button class="ab del" (click)="askDelete(p.id)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+          <div class="del-confirm" *ngIf="deleteId === p.id">
+            <span>Hapus "{{ p.title }}"?</span>
+            <button class="dc-yes" (click)="doDelete(p.id)">Hapus</button>
+            <button class="dc-no"  (click)="cancelDelete()">Batal</button>
+          </div>
+        </div>
+        <div class="empty" *ngIf="projects.length===0">Belum ada project. Klik "Tambah Project".</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div class="mo" *ngIf="modal" (click)="closeModal()">
+  <div class="md" (click)="$event.stopPropagation()">
+
+    <div class="md-hd">
+      <h2>{{ editMode ? 'Edit Project' : 'Tambah Project' }}</h2>
+      <button class="md-x" (click)="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="md-body">
+      <div class="md-cols">
+
+        <!-- FORM -->
+        <div class="md-form">
+          <div class="fg">
+            <label>Judul Project <span class="req">*</span></label>
+            <input type="text" [(ngModel)]="form.title" placeholder="Nama project..." />
+          </div>
+          <div class="fg-row">
+            <div class="fg">
+              <label>Kategori <span class="req">*</span></label>
+              <input type="text" [(ngModel)]="form.category" placeholder="Angular / Laravel..." />
+            </div>
+            <div class="fg">
+              <label>Tahun</label>
+              <input type="number" [(ngModel)]="form.year" min="2000" max="2099" />
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg">
+              <label>Client</label>
+              <input type="text" [(ngModel)]="form.client" placeholder="Nama client..." />
+            </div>
+            <div class="fg">
+              <label>Link</label>
+              <input type="url" [(ngModel)]="form.link" placeholder="https://..." />
+            </div>
+          </div>
+          <div class="fg">
+            <label>Deskripsi <span class="req">*</span></label>
+            <textarea [(ngModel)]="form.description" rows="3" placeholder="Jelaskan project..."></textarea>
+          </div>
+          <div class="fg">
+            <label>Tags <em class="fh">(Enter / koma untuk tambah)</em></label>
+            <div class="ti">
+              <span class="tc" *ngFor="let t of form.tags">{{ t }}<button type="button" (click)="removeTag(t)">×</button></span>
+              <input type="text" [(ngModel)]="tagInput" (keydown)="tagKey($event)" placeholder="Tambah tag..." />
+            </div>
+          </div>
+        </div>
+
+        <!-- IMAGE -->
+        <div class="md-img">
+          <label>Screenshot / Foto Project</label>
+          <div class="uz"
+               [class.drag]="dragging"
+               [class.filled]="preview"
+               (click)="!preview && pickFile()"
+               (dragover)="onDragOver($event)"
+               (dragleave)="onDragLeave()"
+               (drop)="onDrop($event)">
+            <img *ngIf="preview" [src]="preview" alt="preview" class="uz-img" />
+            <div class="uz-ph" *ngIf="!preview">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" width="44" height="44"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              <p>Drag &amp; drop foto</p>
+              <span>atau klik untuk browse</span>
+              <small>PNG · JPG · WebP</small>
+            </div>
+          </div>
+          <div class="img-info" *ngIf="imgInfo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="12" height="12"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            {{ imgInfo }}
+          </div>
+          <div class="uz-btns" *ngIf="preview">
+            <button type="button" (click)="pickFile()">Ganti Foto</button>
+            <button type="button" class="rm" (click)="removeImg()">Hapus</button>
+          </div>
+          <input #fileInput type="file" accept="image/*" style="display:none" (change)="onFileChange($event)" />
+        </div>
+      </div>
+    </div>
+
+    <div class="md-ft">
+      <div class="msg err" *ngIf="errMsg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        {{ errMsg }}
+      </div>
+      <div class="msg ok" *ngIf="okMsg">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><polyline points="20 6 9 17 4 12"/></svg>
+        {{ okMsg }}
+      </div>
+      <div class="ft-btns">
+        <button class="btn-cancel" (click)="closeModal()">Batal</button>
+        <button class="btn-save" (click)="save()" [disabled]="!valid || saving">
+          <span class="spin" *ngIf="saving"></span>
+          <span *ngIf="!saving">{{ editMode ? 'Update' : 'Simpan' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
