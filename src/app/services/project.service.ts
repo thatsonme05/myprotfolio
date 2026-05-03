@@ -17,26 +17,20 @@ const DEFAULTS: Project[] = [
     id: '1', title: 'Bassics — Shopify Store',
     description: 'Membangun dan mengkustomisasi toko Shopify untuk brand fashion lokal Bassics, mencakup halaman produk, lookbook, koleksi anniversary, dan integrasi tema premium.',
     category: 'Shopify', tags: ['Shopify', 'Liquid', 'E-Commerce'],
-    image: '', year: 2023, client: 'Bassics',
+    image: 'assets/bassicsweb.jpeg', year: 2025, client: 'Bassics',
   },
   {
     id: '2', title: 'POBSI Sulawesi Tengah',
     description: 'Website resmi POBSI Provinsi Sulawesi Tengah. Fitur: data atlet, kejuaraan, berita, dan panel admin lengkap dengan Angular.',
     category: 'Angular', tags: ['Angular', 'Laravel', 'REST API'],
-    image: '', year: 2025, client: 'DPRD Prov. Sulawesi Tengah',
+    image: 'assets/pobsiweb.png', year: 2026, client: 'DPRD Prov. Sulawesi Tengah',
   },
   {
     id: '3', title: 'Paradise Noise — WordPress',
     description: 'Website WordPress untuk brand desain kreatif dengan tampilan minimalis, blog, halaman produk, dan galeri karya.',
     category: 'WordPress', tags: ['WordPress', 'WooCommerce', 'Custom Theme'],
-    image: '', year: 2023, client: 'Paradise Noise',
+    image: 'assets/paradisenoiseweb.png', year: 2023, client: 'Paradise Noise',
   },
-  {
-    id: '4', title: 'Website Rental — Laravel',
-    description: 'Aplikasi web rental berbasis Laravel: sistem pemesanan, dashboard admin, manajemen pengguna, dan laporan transaksi.',
-    category: 'Laravel', tags: ['Laravel', 'PHP', 'MySQL'],
-    image: '', year: 2024, client: 'PT. Imersa Solusi Teknologi',
-  }
 ];
 
 @Injectable({ providedIn: 'root' })
